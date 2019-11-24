@@ -1,0 +1,8 @@
+/node_modules
+.DS_Store*
+Icon?
+._*
+package-lock.json
+*.log
+*.gz
+.env
