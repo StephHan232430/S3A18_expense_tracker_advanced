@@ -1,6 +1,8 @@
 const express = require('express')
-const app = express()
+const exphbs = require('express-handlebars')
+const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
+const app = express()
 
 mongoose.connect('mongodb://localhost/expense-tracker', { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
 
@@ -12,10 +14,13 @@ db.once('open', () => {
   console.log('mongodb connected!')
 })
 
-const Record = require('./models/record')
+app.engine('hbs', exphbs({ extname: 'hbs', defaultLayout: 'main' }))
+app.set('view engine', 'hbs')
+
+app.use(bodyParser.urlencoded({ extended: true }))
 
 app.get('/', (req, res) => {
-  res.send('project init')
+  return res.render('index')
 })
 
 app.listen(3000, () => {
