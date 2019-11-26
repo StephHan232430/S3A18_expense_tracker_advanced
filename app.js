@@ -1,11 +1,12 @@
 const express = require('express')
+const app = express()
 const exphbs = require('express-handlebars')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 const methodOverride = require('method-override')
 const Record = require('./models/record')
 const User = require('./models/user')
-const app = express()
+const session = require('express-session')
 
 mongoose.connect('mongodb://localhost/expense-tracker', { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
 
@@ -23,6 +24,12 @@ app.set('view engine', 'hbs')
 app.use(bodyParser.urlencoded({ extended: true }))
 
 app.use(methodOverride('_method'))
+
+app.use(session({
+  secret: 'Steph',
+  resave: false,
+  saveUninitialized: true
+}))
 
 // routes
 app.use('/', require('./routes/home'))
