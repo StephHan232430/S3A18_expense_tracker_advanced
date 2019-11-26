@@ -60,22 +60,19 @@
           </div>
         </td>
         <td class="text-right">
-          <!-- Button trigger modal -->
           <div class="button-wrapper pt-3">
-            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#edit">
-              Edit
-            </button>
+            <a class="btn btn-warning" href="/records/{{{this._id}}}/edit" role="button">Edit</a>
             <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete">
               Delete
             </button>
           </div>
 
           <!-- Edit modal -->
-          <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+          {{!-- <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
               <div class="modal-content">
                 <div class="modal-body mt-3">
-                  <form method="POST" action="/records/{{this._id}}/edit">
+                  <form method="POST" action="/records/{{{this._id}}}?_method=PUT">
                     <div class="container">
                       <div class="input-group mb-2">
                         <div class="input-group-prepend">
@@ -83,7 +80,7 @@
                             <span class="text-secondary">名稱</span>
                           </div>
                         </div>
-                        <input class="col-10" type="text" name="name" value="{{this.name}}" required>
+                        <input class="col-10" type="text" name="name" value="{{{this.name}}}" required>
                       </div>
 
                       <div class="input-group mb-2">
@@ -92,7 +89,7 @@
                             <span class="text-secondary">日期</span>
                           </div>
                         </div>
-                        <input class="col-10" type="date" name="date" value="{{this.date}}" required>
+                        <input class="col-10" type="date" name="date" value="{{{this.date}}}" required>
                       </div>
 
                       <div class="input-group mb-2">
@@ -101,14 +98,13 @@
                             <span class="text-secondary">類別</span>
                           </div>
                         </div>
-                        <select class="form-control col-10" id="category" name="category" value="{{this.category}}"
-                          required>
+                        <select class="form-control col-10" id="category" name="category" required>
                           <option value="" disabled selected>必選一類</option>
-                          <option value="household">家居物業</option>
-                          <option value="transportation">交通出行</option>
-                          <option value="entertainment">休閒娛樂</option>
-                          <option value="diet">餐飲食品</option>
-                          <option value="others">其他</option>
+                          <option value="household" {{#if this.household}} selected {{/if}}>家居物業</option>
+                          <option value="transportation" {{#if this.transportation}} selected {{/if}}>交通出行</option>
+                          <option value="entertainment" {{#if this.entertainment}} selected {{/if}}>休閒娛樂</option>
+                          <option value="diet" {{#if this.diet}} selected {{/if}}>餐飲食品</option>
+                          <option value="others" {{#if this.others}} selected {{/if}}>其他</option>
                         </select>
                       </div>
 
@@ -118,7 +114,7 @@
                             <span class="text-secondary">金額</span>
                           </div>
                         </div>
-                        <input class="col-10" type="number" min="0" step="0.5" name="amount" value="{{this.amount}}">
+                        <input class="col-10" type="number" min="0" step="0.5" name="amount" value="{{{this.amount}}}">
                       </div>
 
                       <div class="modal-footer">
@@ -129,14 +125,14 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> --}}
 
           <!-- Delete modal -->
           <div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="delete" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="delete">確定要刪除 <strong class="text-danger">午餐</strong> ？</h5>
+                  <h5 class="modal-title" id="delete">確定要刪除 <strong class="text-danger">{{{this.name}}}</strong> ？</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
@@ -148,7 +144,7 @@
                       Cancel
                     </a>
                     ，確認刪除請按
-                    <form method="POST" action="/records/{{this.id}}/delete?_method=DELETE" class="d-inline">
+                    <form method="POST" action="/records/{{{this._id}}}/delete?_method=DELETE" class="d-inline">
                       <button class="btn btn-danger" type="submit">
                         Confirm
                       </button>
@@ -370,11 +366,3 @@
     </div>
   </div>
 </div>
-</div>
-
-{{!-- {{#unless sortType}}
-Sort
-{{/unless}}
-{{#if sortType}}
-{{{sortType}}}
-{{/if}} --}}
