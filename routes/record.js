@@ -14,7 +14,8 @@ router.post('/new', authenticated, (req, res) => {
     name: req.body.name,
     category: req.body.category,
     amount: req.body.amount,
-    date: req.body.date
+    date: req.body.date,
+    userId: req.user._id
   })
   record.save(err => {
     if (err) return console.log(err)
@@ -24,7 +25,7 @@ router.post('/new', authenticated, (req, res) => {
 
 // 完成編輯
 router.put('/:id', authenticated, (req, res) => {
-  Record.findOne({ _id: req.params.id }, (err, record) => {
+  Record.findOne({ _id: req.params.id, userId: req.user._id }, (err, record) => {
     if (err) return console.log(err)
     record.name = req.body.name
     record.date = req.body.date
@@ -39,7 +40,7 @@ router.put('/:id', authenticated, (req, res) => {
 
 // 刪除
 router.delete('/:id/delete', authenticated, (req, res) => {
-  Record.findOne({ _id: req.params.id }, (err, record) => {
+  Record.findOne({ _id: req.params.id, userId: req.user._id }, (err, record) => {
     if (err) return console.log(err)
     record.remove(err => {
       if (err) return console.log(err)

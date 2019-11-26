@@ -28,7 +28,7 @@ router.get('/', authenticated, (req, res) => {
       filterName = '類別'
   }
 
-  Record.find({ category: regex }, (err, records) => {
+  Record.find({ category: regex, userId: req.user._id }, (err, records) => {
     if (err) return console.log(err)
     const isDataEmpty = records.length === 0 ? true : false
     let totalAmount = 0
