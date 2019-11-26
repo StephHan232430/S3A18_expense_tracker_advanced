@@ -15,15 +15,15 @@ const recordSchema = new Schema({
     required: true
   },
   date: {
-    type: Date,
+    type: String,
     required: true
   },
-  userId: {
-    type: Schema.Types.ObjectId,
-    ref: 'User',
-    index: true,
-    required: true
-  }
+  // userId: {
+  //   type: Schema.Types.ObjectId,
+  //   ref: 'User',
+  //   index: true,
+  //   required: true
+  // }
 })
 
-modeule.exports = mongoose.model('Record', recordSchema)
+module.exports = mongoose.model('Record', recordSchema)
