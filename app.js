@@ -7,6 +7,7 @@ const methodOverride = require('method-override')
 const Record = require('./models/record')
 const User = require('./models/user')
 const session = require('express-session')
+const passport = require('passport')
 
 mongoose.connect('mongodb://localhost/expense-tracker', { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
 
@@ -30,6 +31,15 @@ app.use(session({
   resave: false,
   saveUninitialized: true
 }))
+
+app.use(passport.initialize())
+app.use(passport.session())
+require('./config/passport')(passport)
+
+app.use((req, res, next) => {
+  res.locals.user = req.user
+  next()
+})
 
 // routes
 app.use('/', require('./routes/home'))
