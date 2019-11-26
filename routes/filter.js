@@ -30,7 +30,11 @@ router.get('/', (req, res) => {
   Record.find({ category: regex }, (err, records) => {
     if (err) return console.log(err)
     const isDataEmpty = records.length === 0 ? true : false
-    return res.render('index', { records, filter, filterName, isDataEmpty })
+    let totalAmount = 0
+    for (let record of records) {
+      totalAmount += record.amount
+    }
+    return res.render('index', { records, filter, filterName, totalAmount, isDataEmpty })
   })
 })
 

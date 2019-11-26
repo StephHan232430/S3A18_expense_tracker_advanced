@@ -26,7 +26,8 @@ app.use(methodOverride('_method'))
 // routes
 app.use('/', require('./routes/home'))
 app.use('/records', require('./routes/record'))
-app.use('/records/search', require('./routes/search'))
+app.use('/records/filter', require('./routes/filter'))
+app.use('/users', require('./routes/user'))
 
 app.listen(3000, () => {
   console.log('App is running')
