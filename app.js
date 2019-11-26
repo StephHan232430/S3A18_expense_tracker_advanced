@@ -106,11 +106,15 @@ app.put('/records/:id', (req, res) => {
 })
 
 // 刪除
-
-// 新增頁面
-
-
-
+app.delete('/records/:id/delete', (req, res) => {
+  Record.findOne({ _id: req.params.id }, (err, record) => {
+    if (err) return console.log(err)
+    record.remove(err => {
+      if (err) return console.log(err)
+      return res.redirect('/')
+    })
+  })
+})
 
 app.listen(3000, () => {
   console.log('App is running')
