@@ -23,7 +23,11 @@
           <i class="fas fa-file-invoice-dollar"></i>
           家庭記帳本
         </a>
+        {{#if isAuthenticated}}
         <a class="btn btn-info" href="/users/logout" role="button">登出</a>
+        {{else}}
+        <a class="btn btn-info" href="/users/login" role="button">登入</a>
+        {{/if}}
       </div>
     </nav>
   </header>
