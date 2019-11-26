@@ -1,0 +1,50 @@
+const express = require('express')
+const router = express.Router()
+const Record = require('../models/record')
+
+// 首頁
+router.get('/', (req, res) => {
+  return res.redirect('/records')
+})
+
+// 完成新增
+router.post('/new', (req, res) => {
+  const record = new Record({
+    name: req.body.name,
+    category: req.body.category,
+    amount: req.body.amount,
+    date: req.body.date
+  })
+  record.save(err => {
+    if (err) return console.log(err)
+    return res.redirect('/')
+  })
+})
+
+// 完成編輯
+router.put('/:id', (req, res) => {
+  Record.findOne({ _id: req.params.id }, (err, record) => {
+    if (err) return console.log(err)
+    record.name = req.body.name
+    record.date = req.body.date
+    record.category = req.body.category
+    record.amount = req.body.amount
+    record.save(err => {
+      if (err) return console.log(err)
+      return res.redirect('/')
+    })
+  })
+})
+
+// 刪除
+router.delete('/:id/delete', (req, res) => {
+  Record.findOne({ _id: req.params.id }, (err, record) => {
+    if (err) return console.log(err)
+    record.remove(err => {
+      if (err) return console.log(err)
+      return res.redirect('/')
+    })
+  })
+})
+
+module.exports = router

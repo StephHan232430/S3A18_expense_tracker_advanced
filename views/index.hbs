@@ -3,15 +3,20 @@
     <div class="btn-group btn-block">
       <button type="button" class="btn btn-lg btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
         aria-expanded="false">
+        {{#unless filter}}
         類別
+        {{/unless}}
+        {{#if filter}}
+        {{{ filterName }}}
+        {{/if}}
         <span class="sr-only">Toggle Dropdown</span>
       </button>
       <div class="dropdown-menu btn-block text-center">
-        <a class="dropdown-item" href="/search?category=household">家居物業</a>
-        <a class="dropdown-item" href="/search?category=transportation">交通出行</a>
-        <a class="dropdown-item" href="/search?category=entertainment">休閒娛樂</a>
-        <a class="dropdown-item" href="/search?category=diet">餐飲食品</a>
-        <a class="dropdown-item" href="/search?category=others">其他</a>
+        <a class="dropdown-item" href="/records/search?category=household">家居物業</a>
+        <a class="dropdown-item" href="/records/search?category=transportation">交通出行</a>
+        <a class="dropdown-item" href="/records/search?category=entertainment">休閒娛樂</a>
+        <a class="dropdown-item" href="/records/search?category=diet">餐飲食品</a>
+        <a class="dropdown-item" href="/records/search?category=others">其他</a>
       </div>
     </div>
   </div>
@@ -170,6 +175,12 @@
     </tbody>
   </table>
 
+  {{#if isDataEmpty}}
+  <div class="container text-center">
+    <h2>尚無此類別支出</h2>
+  </div>
+  {{/if}}
+
   {{!-- Create button trigger modal --}}
   <div class="container text-center">
     <button type="button" class="btn btn-success col-6 mt-3" data-toggle="modal" data-target="#create">
@@ -228,7 +239,7 @@
               </div>
 
               <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消編輯</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
                 <button type="submit" class="btn btn-success">新增支出</button>
               </div>
           </form>
