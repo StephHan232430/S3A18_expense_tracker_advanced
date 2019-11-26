@@ -1,8 +1,9 @@
 const express = require('express')
 const router = express.Router()
 const Record = require('../models/record')
+const { authenticated } = require('../config/auth')
 
-router.get('/', (req, res) => {
+router.get('/', authenticated, (req, res) => {
   const filter = req.query.category
   const regex = new RegExp(filter, 'i')
   let filterName = ''

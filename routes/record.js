@@ -1,14 +1,15 @@
 const express = require('express')
 const router = express.Router()
 const Record = require('../models/record')
+const { authenticated } = require('../config/auth')
 
 // 首頁
-router.get('/', (req, res) => {
+router.get('/', authenticated, (req, res) => {
   return res.redirect('/records')
 })
 
 // 完成新增
-router.post('/new', (req, res) => {
+router.post('/new', authenticated, (req, res) => {
   const record = new Record({
     name: req.body.name,
     category: req.body.category,
@@ -22,7 +23,7 @@ router.post('/new', (req, res) => {
 })
 
 // 完成編輯
-router.put('/:id', (req, res) => {
+router.put('/:id', authenticated, (req, res) => {
   Record.findOne({ _id: req.params.id }, (err, record) => {
     if (err) return console.log(err)
     record.name = req.body.name
@@ -37,7 +38,7 @@ router.put('/:id', (req, res) => {
 })
 
 // 刪除
-router.delete('/:id/delete', (req, res) => {
+router.delete('/:id/delete', authenticated, (req, res) => {
   Record.findOne({ _id: req.params.id }, (err, record) => {
     if (err) return console.log(err)
     record.remove(err => {

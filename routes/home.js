@@ -1,8 +1,9 @@
 const express = require('express')
 const router = express.Router()
 const Record = require('../models/record')
+const { authenticated } = require('../config/auth')
 
-router.get('/', (req, res) => {
+router.get('/', authenticated, (req, res) => {
   Record.find((err, records) => {
     if (err) return console.log(err)
     let totalAmount = 0
