@@ -28,12 +28,35 @@ router.get('/', authenticated, (req, res) => {
       filterName = '類別'
   }
 
-  Record.find({ category: regex, userId: req.user._id }, (err, records) => {
+  Record.find({ category: regex, userId: req.user._id }).sort({ date: 'desc' }).exec((err, records) => {
     if (err) return console.log(err)
     const isDataEmpty = records.length === 0 ? true : false
     let totalAmount = 0
     for (let record of records) {
       totalAmount += record.amount
+      switch (filter) {
+        case 'household':
+          record.household = true
+          break
+        case 'transportation':
+          record.transportation = true
+          break
+        case 'entertainment':
+          record.entertainment = true
+          break
+        case 'diet':
+          record.diet = true
+          break
+        case 'others':
+          record.others = true
+          break
+        default:
+          record.household = false
+          record.transportation = false
+          record.entertainment = false
+          record.diet = false
+          record.others = false
+      }
     }
     return res.render('index', { records, filter, filterName, totalAmount, isDataEmpty })
   })

@@ -1,0 +1,14 @@
+{
+  "users": [
+    {
+      "name": "Tony",
+      "email": "tony@stark.com",
+      "password": "iamironman"
+    },
+    {
+      "name": "Steve",
+      "email": "captain@hotmail.com",
+      "password": "icandothisallday"
+    }
+  ]
+}

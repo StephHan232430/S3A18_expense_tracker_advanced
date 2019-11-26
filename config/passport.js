@@ -8,7 +8,7 @@ module.exports = passport => {
   passport.use(new LocalStrategy({ usernameField: 'email' }, (email, password, done) => {
     User.findOne({ email: email }).then(user => {
       if (!user) {
-        return done(null, false, { message: 'That email is not registered' })
+        return done(null, false, { message: '請先註冊才可登入使用' })
       }
 
       bcrypt.compare(password, user.password, (err, isMatch) => {
@@ -16,7 +16,7 @@ module.exports = passport => {
         if (isMatch) {
           return done(null, user)
         } else {
-          return done(null, false, { message: 'Password incorrect' })
+          return done(null, false, { message: '密碼錯誤' })
         }
       })
     })

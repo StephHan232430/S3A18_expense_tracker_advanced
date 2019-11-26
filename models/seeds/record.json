@@ -19,7 +19,7 @@
       "date": "2019-04-23"
     },
     {
-      "name": "電影：驚奇隊長",
+      "name": "電影：英雄內戰",
       "category": "entertainment",
       "amount": 220,
       "date": "2019-04-23"
@@ -28,6 +28,36 @@
       "name": "租金",
       "category": "household",
       "amount": 25000,
+      "date": "2019-04-01"
+    },
+    {
+      "name": "早餐",
+      "category": "diet",
+      "amount": 110,
+      "date": "2019-05-20"
+    },
+    {
+      "name": "錢包遺失",
+      "category": "others",
+      "amount": 3000,
+      "date": "2019-05-21"
+    },
+    {
+      "name": "高鐵",
+      "category": "transportation",
+      "amount": 1500,
+      "date": "2019-04-23"
+    },
+    {
+      "name": "電影：英雄內戰",
+      "category": "entertainment",
+      "amount": 220,
+      "date": "2019-04-23"
+    },
+    {
+      "name": "水管修繕",
+      "category": "household",
+      "amount": 5000,
       "date": "2019-04-01"
     }
   ]

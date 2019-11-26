@@ -1,6 +1,10 @@
 const mongoose = require('mongoose')
 const Record = require('../record')
 const recordSeeds = require('./record.json').results
+const User = require('../user')
+const userSeeds = require('./user.json').users
+const bcrypt = require('bcryptjs')
+
 
 mongoose.connect('mongodb://localhost/expense-tracker', { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
 const db = mongoose.connection
@@ -11,14 +15,25 @@ db.on('error', () => {
 
 db.once('open', () => {
   console.log('mongodb connected!')
-  for (let i = 0; i < recordSeeds.length; i++) {
-    Record.create({
-      name: recordSeeds[i].name,
-      category: recordSeeds[i].category,
-      amount: recordSeeds[i].amount,
-      date: recordSeeds[i].date
+
+  for (let uNum = 0; uNum < userSeeds.length; uNum++) {
+    bcrypt.genSalt(10, (err, salt) => {
+      bcrypt.hash(userSeeds[uNum].password, salt, (err, hash) => {
+        if (err) throw err
+        userSeeds[uNum].password = hash
+        User.create(userSeeds[uNum]).then(user => {
+          for (let rNum = uNum * 5; rNum < (uNum + 1) * 5; rNum++) {
+            Record.create({
+              name: recordSeeds[rNum].name,
+              category: recordSeeds[rNum].category,
+              amount: recordSeeds[rNum].amount,
+              date: recordSeeds[rNum].date,
+              userId: user._id
+            })
+          }
+        }).catch(err => console.log(err))
+      })
     })
   }
   console.log('seeded!')
 })
-
