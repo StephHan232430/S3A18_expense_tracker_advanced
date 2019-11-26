@@ -4,6 +4,7 @@ const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 const methodOverride = require('method-override')
 const Record = require('./models/record')
+const User = require('./models/user')
 const app = express()
 
 mongoose.connect('mongodb://localhost/expense-tracker', { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })

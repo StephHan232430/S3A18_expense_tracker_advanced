@@ -1,6 +1,5 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
-require('mongoose-type-url')
 
 const userSchema = new Schema({
   name: {
@@ -8,7 +7,7 @@ const userSchema = new Schema({
     required: true
   },
   email: {
-    type: mongoose.SchemaTypes.Url,
+    type: String,
     required: true
   },
   password: {
