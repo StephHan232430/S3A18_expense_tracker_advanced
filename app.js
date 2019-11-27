@@ -12,7 +12,7 @@ if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
 
-mongoose.connect('mongodb://localhost/expense-tracker', { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/expense-tracker', { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
 
 const db = mongoose.connection
 db.on('error', () => {
@@ -56,6 +56,6 @@ app.use('/records/filter', require('./routes/filter'))
 app.use('/users', require('./routes/user'))
 app.use('/auth', require('./routes/auths'))
 
-app.listen(3000, () => {
+app.listen(process.env.PORT || 3000, () => {
   console.log('App is running')
 })
