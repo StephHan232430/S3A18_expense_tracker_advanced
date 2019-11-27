@@ -28,152 +28,155 @@
     </div>
   </div>
 
-  <table class="table table-striped col-8 mx-auto">
-    <tbody>
-      {{#each records}}
-      <tr>
-        <th class="text-right">
-          <div class="icon-wrapper pt-1">
-            <h1>
-              {{#if this.household}}
-              <i class="fas fa-home fa-sm align-middle"></i>
-              {{/if}}
-              {{#if this.transportation}}
-              <i class="fas fa-shuttle-van fa-xs align-middle"></i>
-              {{/if}}
-              {{#if this.entertainment}}
-              <i class="fas fa-grin-beam align-middle"></i>
-              {{/if}}
-              {{#if this.diet}}
-              <i class="fas fa-utensils align-middle"></i>
-              {{/if}}
-              {{#if this.others}}
-              <i class="fas fa-pen align-middle"></i>
-              {{/if}}
-            </h1>
-          </div>
-        </th>
-        <td>
-          <div class="info-wrapper column pt-1">
-            <h4>{{this.name}}</h4>
-            <p>{{this.date}}</p>
-          </div>
-        </td>
-        <td class="text-right">
-          <div class="cost-wrapper mx-auto">
-            <h3 class="pt-3">{{this.amount}}</h3>
-          </div>
-        </td>
-        <td class="text-right">
-          <div class="button-wrapper pt-3">
-            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#edit{{{this._id}}}">
-              Edit
-            </button>
-            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete{{{this._id}}}">
-              Delete
-            </button>
-
-            <!-- Edit modal -->
-            <div class="update-modal">
-              <div class="modal hide fade" id="edit{{{this._id}}}" tabindex="-1" role="dialog" aria-labelledby="edit"
-                aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                  <div class="modal-content">
-                    <div class="modal-body mt-3">
-                      <form method="POST" action="/records/{{{this._id}}}?_method=PUT">
-                        <div class="container">
-                          <div class="input-group mb-2">
-                            <div class="input-group-prepend">
-                              <div class="input-group-text">
-                                <span class="text-secondary">名稱</span>
-                              </div>
-                            </div>
-                            <input class="col-10" type="text" name="name" value="{{{this.name}}}" required>
-                          </div>
-
-                          <div class="input-group mb-2">
-                            <div class="input-group-prepend">
-                              <div class="input-group-text">
-                                <span class="text-secondary">日期</span>
-                              </div>
-                            </div>
-                            <input class="col-10" type="date" name="date" value="{{{this.date}}}" required>
-                          </div>
-
-                          <div class="input-group mb-2">
-                            <div class="input-group-prepend">
-                              <div class="input-group-text">
-                                <span class="text-secondary">類別</span>
-                              </div>
-                            </div>
-                            <select class="form-control col-10" id="category" name="category" required>
-                              <option value="" disabled selected>必選一類</option>
-                              <option value="household" {{#if this.household}} selected {{/if}}>家居物業</option>
-                              <option value="transportation" {{#if this.transportation}} selected {{/if}}>交通出行</option>
-                              <option value="entertainment" {{#if this.entertainment}} selected {{/if}}>休閒娛樂</option>
-                              <option value="diet" {{#if this.diet}} selected {{/if}}>餐飲食品</option>
-                              <option value="others" {{#if this.others}} selected {{/if}}>其他</option>
-                            </select>
-                          </div>
-
-                          <div class="input-group mb-2">
-                            <div class="input-group-prepend">
-                              <div class="input-group-text">
-                                <span class="text-secondary">金額</span>
-                              </div>
-                            </div>
-                            <input class="col-10" type="number" min="0" step="0.5" name="amount"
-                              value="{{{this.amount}}}">
-                          </div>
-
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">取消編輯</button>
-                            <button type="submit" class="btn btn-primary">儲存變更</button>
-                          </div>
-                      </form>
-                    </div>
-                  </div>
-                </div>
-              </div>
+  <div class="col-8  mx-auto table-wrapper-scroll-y custom-scrollbar">
+    <table class="table table-striped">
+      <tbody>
+        {{#each records}}
+        <tr>
+          <th class="text-right">
+            <div class="icon-wrapper pt-1">
+              <h1>
+                {{#if this.household}}
+                <i class="fas fa-home fa-sm align-middle"></i>
+                {{/if}}
+                {{#if this.transportation}}
+                <i class="fas fa-shuttle-van fa-xs align-middle"></i>
+                {{/if}}
+                {{#if this.entertainment}}
+                <i class="fas fa-grin-beam align-middle"></i>
+                {{/if}}
+                {{#if this.diet}}
+                <i class="fas fa-utensils align-middle"></i>
+                {{/if}}
+                {{#if this.others}}
+                <i class="fas fa-pen align-middle"></i>
+                {{/if}}
+              </h1>
             </div>
+          </th>
+          <td>
+            <div class="info-wrapper column pt-1">
+              <h4>{{this.name}}</h4>
+              <p>{{this.date}}</p>
+            </div>
+          </td>
+          <td class="text-right">
+            <div class="cost-wrapper mx-auto">
+              <h3 class="pt-3">{{this.amount}}</h3>
+            </div>
+          </td>
+          <td class="text-right">
+            <div class="button-wrapper pt-3">
+              <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#edit{{{this._id}}}">
+                Edit
+              </button>
+              <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete{{{this._id}}}">
+                Delete
+              </button>
 
-            <!-- Delete modal -->
-            <div class="update-modal">
-              <div class="modal hide fade" id="delete{{{this._id}}}" tabindex="-1" role="dialog"
-                aria-labelledby="delete" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id="delete">確定要刪除 <strong class="text-danger">{{{this.name}}}</strong> ？
-                      </h5>
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                    <div class="modal-body">
-                      <h5>取消刪除請按
-                        <a href="/" role="button" class="btn btn-secondary popover-test" title="Popover title"
-                          data-content="Popover body content is set in this attribute.">
-                          Cancel
-                        </a>
-                        ，確認刪除請按
-                        <form method="POST" action="/records/{{{this._id}}}/delete?_method=DELETE" class="d-inline">
-                          <button class="btn btn-danger" type="submit">
-                            Confirm
-                          </button>
+              <!-- Edit modal -->
+              <div class="update-modal">
+                <div class="modal hide fade" id="edit{{{this._id}}}" tabindex="-1" role="dialog" aria-labelledby="edit"
+                  aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                      <div class="modal-body mt-3">
+                        <form method="POST" action="/records/{{{this._id}}}?_method=PUT">
+                          <div class="container">
+                            <div class="input-group mb-2">
+                              <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                  <span class="text-secondary">名稱</span>
+                                </div>
+                              </div>
+                              <input class="col-10" type="text" name="name" value="{{{this.name}}}" required>
+                            </div>
+
+                            <div class="input-group mb-2">
+                              <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                  <span class="text-secondary">日期</span>
+                                </div>
+                              </div>
+                              <input class="col-10" type="date" name="date" value="{{{this.date}}}" required>
+                            </div>
+
+                            <div class="input-group mb-2">
+                              <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                  <span class="text-secondary">類別</span>
+                                </div>
+                              </div>
+                              <select class="form-control col-10" id="category" name="category" required>
+                                <option value="" disabled selected>必選一類</option>
+                                <option value="household" {{#if this.household}} selected {{/if}}>家居物業</option>
+                                <option value="transportation" {{#if this.transportation}} selected {{/if}}>交通出行
+                                </option>
+                                <option value="entertainment" {{#if this.entertainment}} selected {{/if}}>休閒娛樂</option>
+                                <option value="diet" {{#if this.diet}} selected {{/if}}>餐飲食品</option>
+                                <option value="others" {{#if this.others}} selected {{/if}}>其他</option>
+                              </select>
+                            </div>
+
+                            <div class="input-group mb-2">
+                              <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                  <span class="text-secondary">金額</span>
+                                </div>
+                              </div>
+                              <input class="col-10" type="number" min="0" step="0.5" name="amount"
+                                value="{{{this.amount}}}">
+                            </div>
+
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal">取消編輯</button>
+                              <button type="submit" class="btn btn-primary">儲存變更</button>
+                            </div>
                         </form>
-                      </h5>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Delete modal -->
+              <div class="update-modal">
+                <div class="modal hide fade" id="delete{{{this._id}}}" tabindex="-1" role="dialog"
+                  aria-labelledby="delete" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="delete">確定要刪除 <strong class="text-danger">{{{this.name}}}</strong> ？
+                        </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <h5>取消刪除請按
+                          <a href="/" role="button" class="btn btn-secondary popover-test" title="Popover title"
+                            data-content="Popover body content is set in this attribute.">
+                            Cancel
+                          </a>
+                          ，確認刪除請按
+                          <form method="POST" action="/records/{{{this._id}}}/delete?_method=DELETE" class="d-inline">
+                            <button class="btn btn-danger" type="submit">
+                              Confirm
+                            </button>
+                          </form>
+                        </h5>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        </td>
-      </tr>
-      {{/each}}
-    </tbody>
-  </table>
+          </td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
 
   {{#if isDataEmpty}}
   <div class="container text-center">
@@ -182,7 +185,7 @@
   {{/if}}
 
   {{!-- Create button trigger modal --}}
-  <div class="container text-center">
+  <div class="container text-center mb-4 mt-2">
     <button type="button" class="btn btn-success col-6 mt-3" data-toggle="modal" data-target="#create">
       新增支出
     </button>
