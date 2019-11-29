@@ -6,7 +6,7 @@ const userSeeds = require('./user.json').users
 const bcrypt = require('bcryptjs')
 
 
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/expense-tracker', { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/expense-tracker-advanced', { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
 const db = mongoose.connection
 
 db.on('error', () => {
@@ -25,6 +25,7 @@ db.once('open', () => {
           for (let rNum = uNum * 5; rNum < (uNum + 1) * 5; rNum++) {
             Record.create({
               name: recordSeeds[rNum].name,
+              merchant: recordSeeds[rNum].merchant,
               category: recordSeeds[rNum].category,
               amount: recordSeeds[rNum].amount,
               date: recordSeeds[rNum].date,

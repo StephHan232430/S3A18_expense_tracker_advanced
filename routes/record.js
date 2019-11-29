@@ -12,11 +12,13 @@ router.get('/', authenticated, (req, res) => {
 router.post('/new', authenticated, (req, res) => {
   const record = new Record({
     name: req.body.name,
+    merchant: req.body.merchant,
     category: req.body.category,
     amount: req.body.amount,
     date: req.body.date,
     userId: req.user._id
   })
+  console.log(typeof req.body.date)
   record.save(err => {
     if (err) return console.log(err)
     return res.redirect('/')
@@ -28,6 +30,7 @@ router.put('/:id', authenticated, (req, res) => {
   Record.findOne({ _id: req.params.id, userId: req.user._id }, (err, record) => {
     if (err) return console.log(err)
     record.name = req.body.name
+    record.merchant = req.body.merchant
     record.date = req.body.date
     record.category = req.body.category
     record.amount = req.body.amount

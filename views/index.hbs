@@ -1,22 +1,62 @@
 <div class="container mt-5">
-  <div class="col-8 mx-auto">
-    <div class="btn-group btn-block">
-      <button type="button" class="btn btn-lg btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-        aria-expanded="false">
-        {{#unless filter}}
-        類別
+  <div class="col-8 mx-auto text-center">
+
+    <div class="btn-group col-5 d-inline-block mx-auto">
+      <button type="button" class="btn btn-lg btn-outline-secondary dropdown-toggle" data-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="false">
+        {{#unless month}}
+        月份
         {{/unless}}
-        {{#if filter}}
-        {{{ filterName }}}
+        {{#if month}}
+        {{{ month }}}
         {{/if}}
         <span class="sr-only">Toggle Dropdown</span>
       </button>
       <div class="dropdown-menu btn-block text-center">
-        <a class="dropdown-item" href="/records/filter?category=household">家居物業</a>
-        <a class="dropdown-item" href="/records/filter?category=transportation">交通出行</a>
-        <a class="dropdown-item" href="/records/filter?category=entertainment">休閒娛樂</a>
-        <a class="dropdown-item" href="/records/filter?category=diet">餐飲食品</a>
-        <a class="dropdown-item" href="/records/filter?category=others">其他</a>
+        <form action="/records/filter">
+          <input type="month" name="month" class="form-control month-selector" value="{{month}}">
+          <input class="btn btn-outline-secondary mt-1" type="submit" value="Submit">
+        </form>
+
+      </div>
+    </div>
+
+    <div class="btn-group col-5 d-inline-block mx-auto">
+      <button type="button" class="btn btn-lg btn-outline-secondary dropdown-toggle" data-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="false">
+        {{#unless category}}
+        所有類別
+        {{/unless}}
+        {{#if category}}
+        {{{ categoryName }}}
+        {{/if}}
+        <span class="sr-only">Toggle Dropdown</span>
+      </button>
+      <div class="dropdown-menu btn-block text-center">
+        <a class="dropdown-item text-left" href="/records/filter?{{#if month}}month={{month}}&{{/if}}category=">所有類別</a>
+        <a class="dropdown-item text-left"
+          href="/records/filter?{{#if month}}month={{month}}&{{/if}}category=household">
+          <i class="fas fa-home fa-xs align-middle pr-1"></i>
+          家居物業
+        </a>
+        <a class="dropdown-item text-left"
+          href="/records/filter?{{#if month}}month={{month}}&{{/if}}category=transportation">
+          <i class="fas fa-shuttle-van fa-xs align-middle"></i>
+          交通出行
+        </a>
+        <a class="dropdown-item text-left"
+          href="/records/filter?{{#if month}}month={{month}}&{{/if}}category=entertainment">
+          <i class="fas fa-grin-beam align-middle pr-1"></i>
+          休閒娛樂
+        </a>
+        <a class="dropdown-item text-left" href="/records/filter?{{#if month}}month={{month}}&{{/if}}category=diet">
+          <i class="fas fa-utensils align-middle pr-2"></i>
+          餐飲食品
+        </a>
+        <a class="dropdown-item text-left" href="/records/filter?{{#if month}}month={{month}}&{{/if}}category=others">
+          <i class="fas fa-pen align-middle pr-1"></i>
+          其他
+        </a>
       </div>
     </div>
   </div>
@@ -27,8 +67,8 @@
       <h1 class="text-center">{{{totalAmount}}}</h1>
     </div>
   </div>
-
-  <div class="col-8  mx-auto table-wrapper-scroll-y custom-scrollbar">
+  {{#unless isDataEmpty}}
+  <div class="col-8  mx-auto scrollbar">
     <table class="table table-striped">
       <tbody>
         {{#each records}}
@@ -67,12 +107,76 @@
           </td>
           <td class="text-right">
             <div class="button-wrapper pt-3">
-              <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#edit{{{this._id}}}">
-                Edit
+              <button type="button" class="btn btn-info mr-1" data-toggle="modal" data-target="#info{{{this._id}}}">
+                <i class="fas fa-info px-1"></i>
+              </button>
+              <button type="button" class="btn btn-warning mr-1" data-toggle="modal" data-target="#edit{{{this._id}}}">
+                <i class="far fa-edit"></i>
               </button>
               <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete{{{this._id}}}">
-                Delete
+                <i class="fas fa-trash-alt"></i>
               </button>
+
+              <!-- Info modal -->
+              <div class="update-modal">
+                <div class="modal hide fade" id="info{{{this._id}}}" tabindex="-1" role="dialog" aria-labelledby="info"
+                  aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="info{{{this.id}}}">{{{this.name}}}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+
+                      <div class="modal-body mt-3">
+                        <div class="input-group mb-3">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text" id="{{{this.merchant}}}">支付對象</span>
+                          </div>
+                          <input type="text" class="form-control" placeholder="Username" aria-label="Username"
+                            aria-describedby="basic-addon1" value="{{{this.merchant}}}">
+                        </div>
+
+                        <div class="input-group mb-3">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text" id="{{{this.date}}}">支出日期</span>
+                          </div>
+                          <input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1"
+                            value="{{{this.date}}}">
+                        </div>
+
+                        <div class="input-group mb-2">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text">
+                              <span class="text-secondary">支出類別</span>
+                            </div>
+                          </div>
+                          <select class="form-control" id="category" name="category">
+                            <option value="" disabled selected>必選一類</option>
+                            <option value="household" {{#if this.household}} selected {{/if}} disabled>家居物業</option>
+                            <option value="transportation" {{#if this.transportation}} selected {{/if}} disabled>交通出行
+                            </option>
+                            <option value="entertainment" {{#if this.entertainment}} selected {{/if}} disabled>休閒娛樂
+                            </option>
+                            <option value="diet" {{#if this.diet}} selected {{/if}} disabled>餐飲食品</option>
+                            <option value="others" {{#if this.others}} selected {{/if}} disabled>其他</option>
+                          </select>
+                        </div>
+
+                        <div class="input-group mb-3">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text" id="{{{this.amount}}}">支出金額</span>
+                          </div>
+                          <input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1"
+                            value="{{{this.amount}}}">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
               <!-- Edit modal -->
               <div class="update-modal">
@@ -86,28 +190,37 @@
                             <div class="input-group mb-2">
                               <div class="input-group-prepend">
                                 <div class="input-group-text">
-                                  <span class="text-secondary">名稱</span>
+                                  <span class="text-secondary">款項名稱</span>
                                 </div>
                               </div>
-                              <input class="col-10" type="text" name="name" value="{{{this.name}}}" required>
+                              <input class="col-9" type="text" name="name" value="{{{this.name}}}" required>
                             </div>
 
                             <div class="input-group mb-2">
                               <div class="input-group-prepend">
                                 <div class="input-group-text">
-                                  <span class="text-secondary">日期</span>
+                                  <span class="text-secondary">支付對象</span>
                                 </div>
                               </div>
-                              <input class="col-10" type="date" name="date" value="{{{this.date}}}" required>
+                              <input class="col-9" type="text" name="merchant" value="{{{this.merchant}}}" required>
                             </div>
 
                             <div class="input-group mb-2">
                               <div class="input-group-prepend">
                                 <div class="input-group-text">
-                                  <span class="text-secondary">類別</span>
+                                  <span class="text-secondary">支出日期</span>
                                 </div>
                               </div>
-                              <select class="form-control col-10" id="category" name="category" required>
+                              <input class="col-9" type="date" name="date" value="{{{this.date}}}" required>
+                            </div>
+
+                            <div class="input-group mb-2">
+                              <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                  <span class="text-secondary">支出類別</span>
+                                </div>
+                              </div>
+                              <select class="form-control col-9" id="category" name="category" required>
                                 <option value="" disabled selected>必選一類</option>
                                 <option value="household" {{#if this.household}} selected {{/if}}>家居物業</option>
                                 <option value="transportation" {{#if this.transportation}} selected {{/if}}>交通出行
@@ -121,10 +234,10 @@
                             <div class="input-group mb-2">
                               <div class="input-group-prepend">
                                 <div class="input-group-text">
-                                  <span class="text-secondary">金額</span>
+                                  <span class="text-secondary">支出金額</span>
                                 </div>
                               </div>
-                              <input class="col-10" type="number" min="0" step="0.5" name="amount"
+                              <input class="col-9" type="number" min="0" step="0.5" name="amount"
                                 value="{{{this.amount}}}">
                             </div>
 
@@ -154,10 +267,7 @@
                       </div>
                       <div class="modal-body">
                         <h5>取消刪除請按
-                          <a href="/" role="button" class="btn btn-secondary popover-test" title="Popover title"
-                            data-content="Popover body content is set in this attribute.">
-                            Cancel
-                          </a>
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                           ，確認刪除請按
                           <form method="POST" action="/records/{{{this._id}}}/delete?_method=DELETE" class="d-inline">
                             <button class="btn btn-danger" type="submit">
@@ -177,6 +287,7 @@
       </tbody>
     </table>
   </div>
+  {{/unless}}
 
   {{#if isDataEmpty}}
   <div class="container text-center">
@@ -185,67 +296,78 @@
   {{/if}}
 
   {{!-- Create button trigger modal --}}
-  <div class="container text-center mb-4 mt-2">
+  <div class="container text-center mb-5 mt-2">
     <button type="button" class="btn btn-success col-6 mt-3" data-toggle="modal" data-target="#create">
       新增支出
     </button>
   </div>
 
   {{!-- Create modal --}}
-  <div class="modal fade" id="create" tabindex="-1" role="dialog" aria-labelledby="create" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header justify-content-center">
-          <form method="POST" action="/records/new">
-            <div class="container">
-              <div class="input-group mb-2">
-                <div class="input-group-prepend">
-                  <div class="input-group-text">
-                    <span class="text-secondary">名稱</span>
+  <div class="update-modal">
+    <div class="modal hide fade" id="create" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-body mt-3">
+            <form method="POST" action="/records/new">
+              <div class="container">
+                <div class="input-group mb-2">
+                  <div class="input-group-prepend">
+                    <div class="input-group-text">
+                      <span class="text-secondary">款項名稱</span>
+                    </div>
                   </div>
+                  <input class="col-9" type="text" name="name" required>
                 </div>
-                <input class="col-9" type="text" name="name" required>
-              </div>
 
-              <div class="input-group mb-2">
-                <div class="input-group-prepend">
-                  <div class="input-group-text">
-                    <span class="text-secondary">日期</span>
+                <div class="input-group mb-2">
+                  <div class="input-group-prepend">
+                    <div class="input-group-text">
+                      <span class="text-secondary">支付對象</span>
+                    </div>
                   </div>
+                  <input class="col-9" type="text" name="merchant" required>
                 </div>
-                <input class="col-9" type="date" name="date" required>
-              </div>
 
-              <div class="input-group mb-2">
-                <div class="input-group-prepend">
-                  <div class="input-group-text">
-                    <span class="text-secondary">類別</span>
+                <div class="input-group mb-2">
+                  <div class="input-group-prepend">
+                    <div class="input-group-text">
+                      <span class="text-secondary">支出日期</span>
+                    </div>
                   </div>
+                  <input class="col-9" type="date" name="date" required>
                 </div>
-                <select class="form-control col-9" id="category" name="category" required>
-                  <option value="" disabled selected>必選一類</option>
-                  <option value="household">家居物業</option>
-                  <option value="transportation">交通出行</option>
-                  <option value="entertainment">休閒娛樂</option>
-                  <option value="diet">餐飲食品</option>
-                  <option value="others">其他</option>
-                </select>
-              </div>
 
-              <div class="input-group mb-2">
-                <div class="input-group-prepend">
-                  <div class="input-group-text">
-                    <span class="text-secondary">金額</span>
+                <div class="input-group mb-2">
+                  <div class="input-group-prepend">
+                    <div class="input-group-text">
+                      <span class="text-secondary">支出類別</span>
+                    </div>
                   </div>
+                  <select class="form-control col-9" id="category" name="category" required>
+                    <option value="" disabled selected>必選一類</option>
+                    <option value="household">家居物業</option>
+                    <option value="transportation">交通出行</option>
+                    <option value="entertainment">休閒娛樂</option>
+                    <option value="diet">餐飲食品</option>
+                    <option value="others">其他</option>
+                  </select>
                 </div>
-                <input class="col-9" type="number" min="0" step="0.5" name="amount">
-              </div>
 
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                <button type="submit" class="btn btn-success">新增支出</button>
-              </div>
-          </form>
+                <div class="input-group mb-2">
+                  <div class="input-group-prepend">
+                    <div class="input-group-text">
+                      <span class="text-secondary">支出金額</span>
+                    </div>
+                  </div>
+                  <input class="col-9" type="number" min="0" step="0.5" name="amount" required>
+                </div>
+
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                  <button type="submit" class="btn btn-success">新增支出</button>
+                </div>
+            </form>
+          </div>
         </div>
       </div>
     </div>

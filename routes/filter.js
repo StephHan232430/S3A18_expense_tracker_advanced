@@ -4,37 +4,39 @@ const Record = require('../models/record')
 const { authenticated } = require('../config/auth')
 
 router.get('/', authenticated, (req, res) => {
-  const filter = req.query.category
-  const regex = new RegExp(filter, 'i')
-  let filterName = ''
+  const month = req.query.month
+  const category = req.query.category
+  const regexCategory = new RegExp(category, 'i')
+  const regexMonth = new RegExp(month, 'i')
+  let categoryName = ''
 
-  switch (filter) {
+  switch (category) {
     case 'household':
-      filterName = '家居物業'
+      categoryName = '家居物業'
       break
     case 'transportation':
-      filterName = '交通出行'
+      categoryName = '交通出行'
       break
     case 'entertainment':
-      filterName = '休閒娛樂'
+      categoryName = '休閒娛樂'
       break
     case 'diet':
-      filterName = '餐飲食品'
+      categoryName = '餐飲食品'
       break
     case 'others':
-      filterName = '其他'
+      categoryName = '其他'
       break
     default:
-      filterName = '類別'
+      categoryName = '所有類別'
   }
 
-  Record.find({ category: regex, userId: req.user._id }).sort({ date: 'desc' }).exec((err, records) => {
+  Record.find({ date: regexMonth, category: regexCategory, userId: req.user._id }).sort({ date: 'desc' }).exec((err, records) => {
     if (err) return console.log(err)
     const isDataEmpty = records.length === 0 ? true : false
     let totalAmount = 0
     for (let record of records) {
       totalAmount += record.amount
-      switch (filter) {
+      switch (record.category) {
         case 'household':
           record.household = true
           break
@@ -58,7 +60,7 @@ router.get('/', authenticated, (req, res) => {
           record.others = false
       }
     }
-    return res.render('index', { records, filter, filterName, totalAmount, isDataEmpty })
+    return res.render('index', { records, category, categoryName, totalAmount, isDataEmpty, regexMonth, month })
   })
 })
 
