@@ -1,63 +1,28 @@
 <div class="container mt-5">
   <div class="col-8 mx-auto text-center">
 
-    <div class="btn-group col-5 d-inline-block mx-auto">
-      <button type="button" class="btn btn-lg btn-outline-secondary dropdown-toggle" data-toggle="dropdown"
-        aria-haspopup="true" aria-expanded="false">
-        {{#unless month}}
-        月份
-        {{/unless}}
-        {{#if month}}
-        {{{ month }}}
-        {{/if}}
-        <span class="sr-only">Toggle Dropdown</span>
-      </button>
-      <div class="dropdown-menu btn-block text-center">
-        <form action="/records/filter">
-          <input type="month" name="month" class="form-control month-selector" value="{{month}}">
-          <input class="btn btn-outline-secondary mt-1" type="submit" value="Submit">
-        </form>
+    <div class="btn-group col-8 d-inline-block mx-auto justify-content-between">
+      <form action="/records/filter">
+        <div class="row">
+          <div class="col">
+            <input type="month" name="month" class="form-control month-selector" value="{{month}}"
+              onChange="this.form.submit()">
+          </div>
 
-      </div>
-    </div>
-
-    <div class="btn-group col-5 d-inline-block mx-auto">
-      <button type="button" class="btn btn-lg btn-outline-secondary dropdown-toggle" data-toggle="dropdown"
-        aria-haspopup="true" aria-expanded="false">
-        {{#unless category}}
-        所有類別
-        {{/unless}}
-        {{#if category}}
-        {{{ categoryName }}}
-        {{/if}}
-        <span class="sr-only">Toggle Dropdown</span>
-      </button>
-      <div class="dropdown-menu btn-block text-center">
-        <a class="dropdown-item text-left" href="/records/filter?{{#if month}}month={{month}}&{{/if}}category=">所有類別</a>
-        <a class="dropdown-item text-left"
-          href="/records/filter?{{#if month}}month={{month}}&{{/if}}category=household">
-          <i class="fas fa-home fa-xs align-middle pr-1"></i>
-          家居物業
-        </a>
-        <a class="dropdown-item text-left"
-          href="/records/filter?{{#if month}}month={{month}}&{{/if}}category=transportation">
-          <i class="fas fa-shuttle-van fa-xs align-middle"></i>
-          交通出行
-        </a>
-        <a class="dropdown-item text-left"
-          href="/records/filter?{{#if month}}month={{month}}&{{/if}}category=entertainment">
-          <i class="fas fa-grin-beam align-middle pr-1"></i>
-          休閒娛樂
-        </a>
-        <a class="dropdown-item text-left" href="/records/filter?{{#if month}}month={{month}}&{{/if}}category=diet">
-          <i class="fas fa-utensils align-middle pr-2"></i>
-          餐飲食品
-        </a>
-        <a class="dropdown-item text-left" href="/records/filter?{{#if month}}month={{month}}&{{/if}}category=others">
-          <i class="fas fa-pen align-middle pr-1"></i>
-          其他
-        </a>
-      </div>
+          <div class="col">
+            <div class="form-group">
+              <select class="form-control month-selector" name="category" onChange="this.form.submit()">
+                <option value="" {{#if selectAllCategories}}selected{{/if}}>所有類別</option>
+                <option value="household" {{#if selectHousehold}}selected{{/if}}>家居物業</option>
+                <option value="transportation" {{#if selectTransportation}}selected{{/if}}>交通出行</option>
+                <option value="entertainment" {{#if selectEntertainment}}selected{{/if}}>休閒娛樂</option>
+                <option value="diet" {{#if selectDiet}}selected{{/if}}>餐飲食品</option>
+                <option value="others" {{#if selectOthers}}selected{{/if}}>其他</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </form>
     </div>
   </div>
 
@@ -97,7 +62,7 @@
           <td>
             <div class="info-wrapper column pt-1">
               <h4>{{this.name}}</h4>
-              <p>{{this.date}}</p>
+              <p>{{this.formatDate}}</p>
             </div>
           </td>
           <td class="text-right">
@@ -144,7 +109,7 @@
                             <span class="input-group-text" id="{{{this.date}}}">支出日期</span>
                           </div>
                           <input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1"
-                            value="{{{this.date}}}">
+                            value="{{{this.formatDate}}}">
                         </div>
 
                         <div class="input-group mb-2">
@@ -211,7 +176,7 @@
                                   <span class="text-secondary">支出日期</span>
                                 </div>
                               </div>
-                              <input class="col-9" type="date" name="date" value="{{{this.date}}}" required>
+                              <input class="col-9" type="date" name="date" value="{{{this.formatDate}}}" required>
                             </div>
 
                             <div class="input-group mb-2">

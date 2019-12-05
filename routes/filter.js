@@ -6,31 +6,63 @@ const { authenticated } = require('../config/auth')
 router.get('/', authenticated, (req, res) => {
   const month = req.query.month
   const category = req.query.category
-  const regexCategory = new RegExp(category, 'i')
-  const regexMonth = new RegExp(month, 'i')
-  let categoryName = ''
+  let selectHousehold = false
+  let selectTransportation = false
+  let selectEntertainment = false
+  let selectDiet = false
+  let selectOthers = false
+  let selectAllCategories = false
+  let filter = { userId: req.user._id }
 
   switch (category) {
     case 'household':
-      categoryName = '家居物業'
+      selectHousehold = true
       break
     case 'transportation':
-      categoryName = '交通出行'
+      selectTransportation = true
       break
     case 'entertainment':
-      categoryName = '休閒娛樂'
+      selectEntertainment = true
       break
     case 'diet':
-      categoryName = '餐飲食品'
+      selectDiet = true
       break
     case 'others':
-      categoryName = '其他'
+      selectOthers = true
+      break
+    case '':
+      selectAllCategories = true
       break
     default:
-      categoryName = '所有類別'
+      selectHousehold = false
+      selectTransportation = false
+      selectEntertainment = false
+      selectDiet = false
+      selectOthers = false
+      selectAllCategories = false
   }
 
-  Record.find({ date: regexMonth, category: regexCategory, userId: req.user._id }).sort({ date: 'desc' }).exec((err, records) => {
+  if (category !== '') {
+    if (month !== '') {
+      filter.date = {
+        "$gte": new Date(`${month}-1`),
+        "$lte": new Date(`${month}-31`)
+      }
+    }
+    filter.category = category
+  }
+
+  if (month !== '') {
+    if (req.session.category) {
+      filter.category = req.session.category
+    }
+    filter.date = {
+      "$gte": new Date(`${month}-1`),
+      "$lte": new Date(`${month}-31`)
+    }
+  }
+
+  Record.find(filter).sort({ date: 'desc' }).exec((err, records) => {
     if (err) return console.log(err)
     const isDataEmpty = records.length === 0 ? true : false
     let totalAmount = 0
@@ -59,8 +91,10 @@ router.get('/', authenticated, (req, res) => {
           record.diet = false
           record.others = false
       }
+      record.formatDate = record.date.getFullYear() + '-' + (Number(record.date.getMonth()) + 1) + '-' + record.date.getDate()
     }
-    return res.render('index', { records, category, categoryName, totalAmount, isDataEmpty, regexMonth, month })
+
+    return res.render('index', { records, category, selectHousehold, selectTransportation, selectEntertainment, selectDiet, selectOthers, selectAllCategories, totalAmount, isDataEmpty, month })
   })
 })
 

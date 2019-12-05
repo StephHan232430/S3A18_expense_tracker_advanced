@@ -18,7 +18,7 @@ router.post('/new', authenticated, (req, res) => {
     date: req.body.date,
     userId: req.user._id
   })
-  console.log(typeof req.body.date)
+
   record.save(err => {
     if (err) return console.log(err)
     return res.redirect('/')

@@ -25,6 +25,7 @@ router.get('/', authenticated, (req, res) => {
         default:
           record.others = true
       }
+      record.formatDate = record.date.getFullYear() + '-' + (Number(record.date.getMonth()) + 1) + '-' + record.date.getDate()
     }
     return res.render('index', { records, totalAmount })
   })
